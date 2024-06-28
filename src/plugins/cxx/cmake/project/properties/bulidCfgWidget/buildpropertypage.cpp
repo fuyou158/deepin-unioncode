@@ -12,7 +12,7 @@
 #include "cmakeCfgWidget/cmakepropertypage.h"
 
 #include <DTabWidget>
-#include <DPushButton>
+#include <DSuggestButton>
 #include <DFileDialog>
 #include <DStackedWidget>
 #include <DComboBox>
@@ -178,6 +178,7 @@ void BuildPropertyPage::setupOverviewUI()
 
     QHBoxLayout *configureLayout = new QHBoxLayout();
     d->configureComboBox = new DComboBox(this);
+    d->configureComboBox->setFixedWidth(220);
     configureLayout->addWidget(d->configureComboBox);
     configureLayout->setSpacing(10);
     configureLayout->addStretch();
@@ -206,8 +207,10 @@ void BuildPropertyPage::setupOverviewUI()
     QHBoxLayout *hLayout = new QHBoxLayout();
     d->outputDirEdit = new DLineEdit(this);
     d->outputDirEdit->lineEdit()->setReadOnly(true);
-    auto button = new QPushButton(this);
-    button->setText(tr("Browse"));
+    auto button = new DSuggestButton(this);
+    button->setIcon(DStyle::standardIcon(style(), DStyle::SP_SelectElement));
+    button->setIconSize(QSize(24, 24));
+    button->setFixedSize(36, 36);
     connect(button, &QPushButton::clicked, [this](){
         QString outputDirectory = QFileDialog::getExistingDirectory(this, "Output directory", d->outputDirEdit->text());
         if (!outputDirectory.isEmpty()) {
@@ -228,10 +231,11 @@ void BuildPropertyPage::setupOverviewUI()
 
     overviewLayout->setSpacing(0);
     overviewLayout->setMargin(0);
-    overviewLayout->setSpacing(5);
+    overviewLayout->setSpacing(10);
 
     auto formlayout = new QFormLayout(this);
-    formlayout->setContentsMargins(0, 0, 0, 0);
+    formlayout->setSpacing(15);
+    formlayout->setContentsMargins(0, 0, 0, 10);
     formlayout->addRow(QLabel::tr("Build configuration:"), configureLayout);
     formlayout->addRow(tr("Output direcotry:"), hLayout);
 
